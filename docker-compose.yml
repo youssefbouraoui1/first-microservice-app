@@ -1,0 +1,24 @@
+services:
+  youssef-ebank-discovery-service:
+    build: ./Discovery-Service
+    container_name: youssef-ebank-discovery-service
+    ports:
+      - '8761:8761'
+    expose:
+      - '8761'
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:8761/actuator/health"]
+      interval: 10s
+  youssef-ebank-configuration-service:
+    build: ./Configuration-Service
+    container_name: youssef-ebank-configuration-service
+    ports:
+      - '9999:9999'
+    expose:
+      - '9999'
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:9999/actuator/health"]
+      interval: 10s
+    depends_on:
+      youssef-ebank-discovery-service:
+        condition: service_healthy
